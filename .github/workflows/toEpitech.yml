@@ -5,9 +5,6 @@ name: toEpitechCI
 # Controls when the workflow will run
 on: [push, pull_request]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -28,7 +25,7 @@ jobs:
           # The Flutter version to make available on the path
           flutter-version: 2.2.1
       - run: flutter pub get
-      - run: flutter test
+      - run: flutter build
 
   pushOnEpitech:
     runs-on: ubuntu-latest
