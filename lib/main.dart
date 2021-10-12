@@ -1,5 +1,6 @@
-import 'package:f_redditech/main_page.dart';
+import 'package:f_redditech/views/home_page.dart';
 import 'package:flutter/material.dart';
+import 'main_menu_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,11 +17,12 @@ class MyApp extends StatelessWidget {
       title: 'Redditech',
       theme: ThemeData(
         primaryColor: Colors.deepOrange,
-        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.orangeAccent),
       ),
-      home: const Scaffold(
-        body: HomePage(),
-      ),
+      initialRoute: '/home',
+      routes: {
+        '/home': (BuildContext context) => const HomePage(),
+        '/main': (BuildContext context) => const MainMenuPage(userInfos: null),
+      },
     );
   }
 }
