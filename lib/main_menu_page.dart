@@ -18,24 +18,51 @@ class _MyMainMenuPageState extends State<MainMenuPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                print("I'm accessing to profile.");
-              },
-              child: Text(widget.userInfos != null ? widget.userInfos!.displayName: "",
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
+    return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.deepOrange,
               ),
-            )
+              child: Text('Redditech'),
+            ),
+            ListTile(
+              title: const Text('Home'),
+              onTap: () {
+                Navigator.pushNamed(context, '/main');
+              },
+            ),
+            ListTile(
+              title: const Text('Communities'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Settings'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
           ],
         ),
+      ),
+      appBar: AppBar(
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              print("I'm accessing to profile.");
+            },
+            child: Text(widget.userInfos != null ? widget.userInfos!.displayName: "",
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

@@ -25,12 +25,16 @@ jobs:
           # The Flutter version to make available on the path
           flutter-version: 2.2.1
       - run: flutter pub get
-      - run: flutter run
+      - run: flutter build apk
+      - name: Upload APK
+        uses: actions/upload-artifact@v2.2.4
+        with:
+         path: build/app/outputs/flutter-apk/app-release.apk
 
   pushOnEpitech:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: true
           ref: master
