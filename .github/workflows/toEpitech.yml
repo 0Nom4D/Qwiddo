@@ -27,14 +27,14 @@ jobs:
       - run: flutter pub get
       - run: flutter build apk
       - name: Upload APK
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2.2.4
         with:
          path: build/app/outputs/flutter-apk/app-release.apk
 
   pushOnEpitech:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: true
           ref: master
