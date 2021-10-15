@@ -34,6 +34,7 @@ jobs:
   pushOnEpitech:
     runs-on: ubuntu-latest
     steps:
+      - run: git fetch --unshallow git@github.com:EpitechPromo2024/B-DEV-501-NAN-5-1-redditech-arthur.adam.git
       - uses: actions/checkout@v2
         with:
           submodules: true
