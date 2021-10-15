@@ -1,6 +1,7 @@
+// import 'package:f_redditech/views/main_page.dart';
 import 'package:f_redditech/views/home_page.dart';
+import 'controller/user_page_ctrl.dart';
 import 'package:flutter/material.dart';
-import 'main_menu_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,11 +19,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.deepOrange,
       ),
-      initialRoute: '/home',
+      initialRoute: '/',
       routes: {
-        '/home': (BuildContext context) => const HomePage(),
-        '/main': (BuildContext context) => const MainMenuPage(userInfos: null),
+        '/': (BuildContext context) => const HomePage(),
+//        '/home': (BuildContext context) => MainPage(postData: []),
+        '/profile': (BuildContext context) => UserPageController(),
       },
     );
   }
 }
+
+/*
+
+ */

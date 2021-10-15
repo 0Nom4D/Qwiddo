@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:f_redditech/models/api_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -9,26 +11,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<HomePage> {
-
-//  Redditor? userInfos;
-
-//  void connectToReddit() async {
-//    final reddit = Reddit.createInstalledFlowInstance(
-//      clientId: "KE5DpJuRH0sNw1tWYQeerA",
-//      userAgent: "Epicturech",
-//      redirectUri: Uri.parse("reddit://success"),
-//    );
-
-//    final authUrl = reddit.auth.url(["*"], "Epicturech", compactLogin: true);
-//    final result = await FlutterWebAuth.authenticate(
-//        url: authUrl.toString(),
-//        callbackUrlScheme: "reddit"
-//    );
-//    String? code = Uri.parse(result).queryParameters['code'];
-//    await reddit.auth.authorize(code.toString());
-//    userInfos = (await reddit.user.me())!;
-//  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,29 +18,36 @@ class _MyHomePageState extends State<HomePage> {
         children: <Widget>[
           Container(
             alignment: Alignment.center,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                colorFilter: new ColorFilter.mode(Colors.blue.withOpacity(0.8), BlendMode.dstATop),
-                image: NetworkImage("https://cdn.dribbble.com/users/244018/screenshots/1506924/media/b0f10339a5471a0733561a83636babf8.gif"),
-                fit: BoxFit.cover,
-              )
-            ),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  textStyle: const TextStyle(
-                      fontSize: 20
+            child: CachedNetworkImage(
+              imageUrl: "https://cdn.dribbble.com/users/244018/screenshots/1506924/media/b0f10339a5471a0733561a83636babf8.gif",
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                    colorFilter: new ColorFilter.mode(Colors.blue.withOpacity(0.8), BlendMode.dstATop),
+                    )
                   ),
-                  primary: Colors.deepOrange,
                 ),
-                onPressed: () {
-                  //Revoir les routes + Re-faire l'appel d'API à Reddit API puis récupérer la vue changée
-                },
-                child: const Text('Connect to Redditech'),
               ),
             ),
-          ),
+            Container(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    textStyle: const TextStyle(
+                        fontSize: 20
+                    ),
+                    primary: Colors.deepOrange,
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/profile');
+                  },
+                  child: const Text('Connect to Redditech'),
+                ),
+              ),
+            ),
           Container(
             alignment: Alignment.center,
             child: Stack(

@@ -32,7 +32,7 @@ class _MyMainMenuPageState extends State<MainMenuPage> {
             ListTile(
               title: const Text('Home'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.pushNamed(context, '/main');
               },
             ),
             ListTile(
@@ -51,7 +51,6 @@ class _MyMainMenuPageState extends State<MainMenuPage> {
         ),
       ),
       appBar: AppBar(
-//        automaticallyImplyLeading: false,
         actions: <Widget>[
           TextButton(
             onPressed: () {
