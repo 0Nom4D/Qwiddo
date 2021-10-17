@@ -26,6 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: wearerequired/git-mirror-action@v1.0.1
+        if: github.repository != 'EpitechPromo2024/B-DEV-501-NAN-5-1-redditech-arthur.adam.git'
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
         with:
