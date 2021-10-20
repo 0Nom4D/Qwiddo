@@ -3,6 +3,7 @@ import 'package:f_redditech/models/api_launcher.dart';
 import 'package:f_redditech/views/user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:draw/draw.dart';
+import 'package:flutter/rendering.dart';
 
 class UserPageController extends StatefulWidget {
   UserPageController({Key? key}) : super(key: key);
@@ -32,6 +33,8 @@ class _UserPageController extends State<UserPageController> {
         return (value);
       return (null);
     });
+    if (!mounted)
+      return;
     setState(() {
       myProfile = tmp;
     });

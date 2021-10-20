@@ -23,17 +23,21 @@ class _MainPageState extends State<MainPage> {
   }
 
   _createdPostCard(Submission newPosts) {
-    print(newPosts.data!);
     return (Card(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            leading: CircleAvatar(
-              radius: 25.0,
+            title: Text(newPosts.data!["subreddit_name_prefixed"],
+              style: TextStyle(
+                fontSize: 15.0
+              ),
             ),
-            title: Text(newPosts.title),
-            subtitle: newPosts.body == null ? Text(""): Text(newPosts.body!),
+            subtitle: Text("u/" + newPosts.author,
+                style: TextStyle(
+                  fontSize: 15.0
+                ),
+              ),
           )
         ],
       )
@@ -51,13 +55,8 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    int idx  = 0;
-
-    return Scaffold(
-      appBar: AppBar(),
-      body: ListView(
-        children: _listCreation(),
-      )
+    return ListView(
+      children: _listCreation(),
     );
   }
 }

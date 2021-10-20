@@ -1,6 +1,5 @@
-import 'package:f_redditech/controller/main_page_ctrl.dart';
+import 'package:f_redditech/views/base_page.dart';
 import 'package:f_redditech/views/home_page.dart';
-import 'controller/user_page_ctrl.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -22,8 +21,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (BuildContext context) => const HomePage(),
-        '/home': (BuildContext context) => MainPageController(),
-        '/profile': (BuildContext context) => UserPageController(),
+        '/home': (BuildContext context) => BasePage(),
       },
     );
   }

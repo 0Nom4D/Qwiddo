@@ -42,12 +42,33 @@ class ApiLauncher {
     return (retrievedUser);
   }
 
-  Future<List<Submission>> getFrontPagePosts() async {
+  Future<List<Submission>> getFrontPagePosts(String postCategory, int limit) async {
     List<Submission> posts = [];
+    var chosenMethod;
 
     if (isFlowCreated() == false)
       this.createRedditFlow();
-    await for (var frontPost in redditApi.front.hot(limit: 5)) {
+    switch (postCategory) {
+      case "new":
+        chosenMethod = redditApi.front.newest(limit: limit);
+        break;
+      case "hot":
+        chosenMethod = redditApi.front.hot(limit: limit);
+        break;
+      case "top":
+        chosenMethod = redditApi.front.top(limit: limit);
+        break;
+      case "rising":
+        chosenMethod = redditApi.front.rising(limit: limit);
+        break;
+      case "best":
+        chosenMethod = redditApi.front.best(limit: limit);
+        break;
+      case "controversial":
+        chosenMethod = redditApi.front.controversial(limit: limit);
+        break;
+    }
+    await for (var frontPost in chosenMethod) {
       posts.add(frontPost as Submission);
     }
     return (posts);

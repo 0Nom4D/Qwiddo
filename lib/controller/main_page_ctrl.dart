@@ -22,13 +22,13 @@ class _MainPageController extends State<MainPageController> {
     posts = null;
   }
 
-  void retrievePosts() async {
+  void retrievePosts({String postCategory: "new", int limit: 15}) async {
     List<Submission>? tmp;
 
     if (redditApi.isFlowCreated() == false)
       await redditApi.createRedditFlow();
     if (posts == null) {
-      tmp = await redditApi.getFrontPagePosts().then((value) {
+      tmp = await redditApi.getFrontPagePosts(postCategory, limit).then((value) {
         return (value);
       });
       setState(() {

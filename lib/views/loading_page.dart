@@ -5,17 +5,15 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: DefaultTabController(
-        length: 1,
-        child: TabBarView(
-            children: <Widget>[
-              LoadingBouncingGrid.square(
-                borderSize: 3.0,
-                backgroundColor: Colors.deepOrange,
-              ),
-            ],
+    return DefaultTabController(
+      length: 1,
+      child: TabBarView(
+        children: <Widget>[
+          LoadingBouncingGrid.square(
+            borderSize: 3.0,
+            backgroundColor: Colors.deepOrange,
           ),
+        ],
       ),
     );
   }
