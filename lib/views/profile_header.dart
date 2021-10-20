@@ -1,3 +1,4 @@
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -24,10 +25,21 @@ class ProfileHeader extends StatelessWidget {
     required this.nbFollowers,
   });
 
+  int daysBetween(DateTime from, DateTime to) {
+    from = DateTime(from.year, from.month, from.day);
+    to = DateTime(to.year, to.month, to.day);
+    return (to.difference(from).inHours / 24).round();
+  }
+
   @override
   Widget build(BuildContext context) {
 
-    final DateFormat format = DateFormat();
+    initializeDateFormatting('az');
+
+    final now = DateTime.now();
+    final totalDays = daysBetween(createdDate!, now);
+
+    final dayFormat = DateFormat.yMMMMd('fr_FR').format(this.createdDate!);
 
     return Stack(
       alignment: Alignment.center,
@@ -90,7 +102,9 @@ class ProfileHeader extends StatelessWidget {
         Positioned(
           top: 390,
           left: 25.0,
-          child: Text(this.karmaNb.toString() + " karma · " + " · " + this.nbFollowers.toString() + " follower(s)",
+          child: Text(
+            this.karmaNb.toString() + " karma · " + totalDays.toString() +
+    "d · " + dayFormat + " · " + this.nbFollowers.toString() + " follower(s)",
             style: TextStyle(
               fontSize: 15.0,
               color: Colors.grey
@@ -99,15 +113,19 @@ class ProfileHeader extends StatelessWidget {
         ),
         Positioned(
           top: 425,
+          left: 25,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text(this.profileDesc != ""? this.profileDesc! : "No description...",
-                style: TextStyle(
-                  fontSize: 15.0,
-                  color: Colors.black
+              SizedBox(
+                width: (MediaQuery.of(context).size.width) - 25,
+                child: Text(this.profileDesc != "" ? this.profileDesc! : "No description...",
+                  style: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.black
+                  ),
                 ),
-              ),
+              )
             ]
           )
         )

@@ -1,4 +1,4 @@
-import 'package:f_redditech/views/loading_page.dart';
+import  'package:f_redditech/views/loading_page.dart';
 import 'package:f_redditech/models/api_launcher.dart';
 import 'package:f_redditech/views/user_page.dart';
 import 'package:flutter/material.dart';
@@ -23,15 +23,18 @@ class _UserPageController extends State<UserPageController> {
   }
 
   void connectToApi() async {
-    await redditApi.createRedditFlow();
-    myProfile = await redditApi.getMe().then((value) {
+    Redditor? tmp;
+
+    if (redditApi.isFlowCreated() == false)
+      await redditApi.createRedditFlow();
+    tmp = await redditApi.getMe().then((value) {
       if (value != null)
         return (value);
       return (null);
     });
-    print(myProfile!.awardeeKarma);
-    print(myProfile!.awarderKarma);
-    print(myProfile!.commentKarma);
+    setState(() {
+      myProfile = tmp;
+    });
   }
 
   @override
