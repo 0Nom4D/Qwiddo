@@ -1,6 +1,5 @@
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:draw/draw.dart';
-import 'dart:io' show Platform;
 
 class ApiLauncher {
 
@@ -8,7 +7,7 @@ class ApiLauncher {
 
   factory ApiLauncher() => _apiLauncher;
 
-  Reddit? redditApi;
+  late Reddit redditApi;
 
   bool isConnected = false;
 
@@ -22,13 +21,13 @@ class ApiLauncher {
       userAgent: "Qwiddo",
       redirectUri: Uri.parse("reddit://success"),
     );
-    final authUrl = redditApi?.auth.url(["*"], "Qwiddo", compactLogin: true);
+    final authUrl = redditApi.auth.url(["*"], "Qwiddo", compactLogin: true);
     final result = await FlutterWebAuth.authenticate(
         url: authUrl.toString(),
         callbackUrlScheme: "reddit"
     );
     String? code = Uri.parse(result).queryParameters['code'];
-    await redditApi?.auth.authorize(code.toString());
+    await redditApi.auth.authorize(code.toString());
     isConnected = true;
   }
 
@@ -37,10 +36,21 @@ class ApiLauncher {
 
     if (isFlowCreated() == false)
       this.createRedditFlow();
-    retrievedUser = await redditApi?.user.me();
+    retrievedUser = await redditApi.user.me();
     if (retrievedUser == null)
       return (null);
     return (retrievedUser);
+  }
+
+  Future<List<Submission>> getFrontPagePosts() async {
+    List<Submission> posts = [];
+
+    if (isFlowCreated() == false)
+      this.createRedditFlow();
+    await for (var frontPost in redditApi.front.hot(limit: 5)) {
+      posts.add(frontPost as Submission);
+    }
+    return (posts);
   }
 
   bool isFlowCreated() {
