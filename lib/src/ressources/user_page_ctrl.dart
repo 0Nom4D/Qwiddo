@@ -1,6 +1,6 @@
-import 'package:f_redditech/views/loading_page.dart';
-import 'package:f_redditech/models/api_launcher.dart';
-import 'package:f_redditech/views/user_page.dart';
+import 'package:f_redditech/src/ui/loading_page.dart';
+import 'package:f_redditech/src/models/api_launcher.dart';
+import 'package:f_redditech/src/ui/user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:draw/draw.dart';
 

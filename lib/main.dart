@@ -1,7 +1,8 @@
 // import 'package:f_redditech/views/main_page.dart';
-import 'package:f_redditech/views/home_page.dart';
-import 'controller/user_page_ctrl.dart';
+import 'package:f_redditech/src/ui/home_page.dart';
+import 'src/ressources/user_page_ctrl.dart';
 import 'package:flutter/material.dart';
+import 'src/main_page.dart';
 
 void main() {
   runApp(const MyApp());
