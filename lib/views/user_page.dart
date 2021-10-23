@@ -1,8 +1,6 @@
 import 'package:f_redditech/views/profile_header.dart';
-import 'package:f_redditech/views/side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:draw/draw.dart';
-import 'loading_page.dart';
 
 class UserPage extends StatefulWidget {
 

@@ -5,6 +5,7 @@ import 'package:f_redditech/views/main_page.dart';
 import 'package:flutter/cupertino.dart';
 
 class MainPageController extends StatefulWidget {
+
   MainPageController({Key? key}) : super(key: key);
 
   @override
@@ -22,13 +23,13 @@ class _MainPageController extends State<MainPageController> {
     posts = null;
   }
 
-  void retrievePosts({String postCategory: "new", int limit: 15}) async {
+  void retrievePosts({String category = "new", int limit = 15}) async {
     List<Submission>? tmp;
 
     if (redditApi.isFlowCreated() == false)
       await redditApi.createRedditFlow();
     if (posts == null) {
-      tmp = await redditApi.getFrontPagePosts(postCategory, limit).then((value) {
+      tmp = await redditApi.getFrontPagePosts(category, limit).then((value) {
         return (value);
       });
       setState(() {
