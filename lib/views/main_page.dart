@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
+import 'package:f_redditech/controller/main_page_ctrl.dart';
+import 'package:f_redditech/models/api_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:draw/draw.dart';
 
@@ -19,6 +21,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+
+  final redditApi = ApiLauncher();
 
   @override
   void initState() {
@@ -90,6 +94,9 @@ class _MainPageState extends State<MainPage> {
     final now = DateTime.now();
     final totalTime = timeBetween(newPosts.createdUtc, now);
 
+    int nbUpVotes = 0;
+    int nbDownVotes = 0;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: ExpansionTileCard(
@@ -136,20 +143,32 @@ class _MainPageState extends State<MainPage> {
             children: <Widget>[
               IconButton(
                 onPressed: () {
-                  print("Upvote!");
-                  // Upvoter le post;
+                  redditApi.upvotePost(newPosts);
+                  if (newPosts.upvotes == 0) {
+                    setState((){
+                      nbUpVotes += 1;
+                      if (nbDownVotes == 1)
+                        nbDownVotes -= 1;
+                    });
+                  }
                 },
                 icon: Icon(Icons.arrow_upward),
               ),
-              Text(newPosts.upvotes.toString()),
+              Text(nbUpVotes.toString()),
               IconButton(
                 onPressed: () {
-                  print("Downvote!");
-                  // Downvoter le post;
+                  redditApi.downvotePost(newPosts);
+                  if (nbDownVotes == 0) {
+                    setState((){
+                      if (nbUpVotes == 1)
+                        nbUpVotes -= 1;
+                      nbDownVotes += 1;
+                    });
+                  }
                 },
                 icon: Icon(Icons.arrow_downward)
               ),
-              Text(newPosts.downvotes.toString()),
+              Text(nbDownVotes.toString()),
               IconButton(
                   onPressed: () {
                     print("Page de commentaire");

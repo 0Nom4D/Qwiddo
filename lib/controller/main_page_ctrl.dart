@@ -1,8 +1,8 @@
-import 'package:draw/draw.dart';
 import 'package:f_redditech/models/api_launcher.dart';
 import 'package:f_redditech/views/loading_page.dart';
 import 'package:f_redditech/views/main_page.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:draw/draw.dart';
 
 class MainPageController extends StatefulWidget {
 
@@ -43,8 +43,8 @@ class _MainPageController extends State<MainPageController> {
     retrievePosts();
     if (posts == null)
       return (LoadingScreen());
-    return (MainPage(
-      posts: posts,
-    ));
+    return MainPage(
+      posts: posts
+    );
   }
 }

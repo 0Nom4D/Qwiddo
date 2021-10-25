@@ -74,6 +74,14 @@ class ApiLauncher {
     return (posts);
   }
 
+  Future<void> upvotePost(Submission upvotedPost) {
+    return (upvotedPost.upvote());
+  }
+
+  Future<void> downvotePost(Submission downvotedPost) {
+    return (downvotedPost.downvote());
+  }
+
   bool isFlowCreated() {
     return this.isConnected;
   }
