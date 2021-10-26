@@ -13,10 +13,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Redditech',
-      theme: ThemeData(
-        primaryColor: Colors.deepOrange,
+      home: Scaffold(
+        backgroundColor: Colors.deepOrangeAccent,
+        appBar: AppBar(
+          backgroundColor: Colors.deepOrange,
+          title: Text("Redditech"),
+          centerTitle: true,
+          actions: [Icon(Icons.account_circle)],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.deepOrange,
+          items: [
+            BottomNavigationBarItem(
+              title: Text("Connect"),
+              icon: Icon(Icons.account_circle),
+            ),
+          ],
+        ),
       ),
       initialRoute: '/',
       routes: {
