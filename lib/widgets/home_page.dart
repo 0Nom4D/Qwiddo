@@ -42,7 +42,7 @@ class _MyHomePageState extends State<HomePage> {
                 onPressed: () {
                   Navigator.pushNamed(context, '/home');
                 },
-                child: const Text('Connect to Redditech'),
+                child: new Tooltip(message: 'Connection', child: new Text("Connect to Redditech")),
               ),
             ),
           ),

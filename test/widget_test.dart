@@ -1,30 +1,42 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility that Flutter provides. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
+import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import '../poc/flutter_no_providers/main.dart';
+import 'package:f_redditech/widgets/home_page.dart';
+import 'package:f_redditech/widgets/base_page.dart';
+import 'package:f_redditech/widgets/loading_page.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
-
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  final homeApp = MediaQuery(
+      data: const MediaQueryData(),
+      child: MaterialApp(
+        home: HomePage(),
+      ));
+  testWidgets('Test set home page', (WidgetTester tester) async {
+    await tester.pumpWidget(homeApp);
+  });
+  final baseApp = MediaQuery(
+      data: const MediaQueryData(),
+      child: MaterialApp(
+        home: BasePage(),
+      ));
+  testWidgets('Test set base page', (WidgetTester tester) async {
+    await tester.pumpWidget(baseApp);
+  });
+  final loadingApp = MediaQuery(
+      data: const MediaQueryData(),
+      child: MaterialApp(
+        home: LoadingScreen(),
+      ));
+  testWidgets('Test set loading page', (WidgetTester tester) async {
+    await tester.pumpWidget(loadingApp);
+  });
+  testWidgets('test du tap', (WidgetTester t) async{
+    await t.pumpWidget(baseApp);
+    final home_btn = find.byIcon(Icons.home);
+    final profil_btn = find.byIcon(Icons.account_circle);
+    await t.tap(home_btn);
+    final Redditor? userData;
+    await t.pump();
+    await t.tap(profil_btn);
   });
 }
