@@ -5,6 +5,7 @@ import 'package:f_redditech/providers/settings_datas.dart';
 import 'package:f_redditech/providers/user_datas.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:draw/draw.dart';
+import 'dart:io';
 
 class ApiLauncher {
 
@@ -19,10 +20,10 @@ class ApiLauncher {
   ApiLauncher._internal();
 
   Future<void> createRedditFlow() async {
-//    Map<String, String> envVars = Platform.environment;
+    Map<String, String> envVars = Platform.environment;
 
     redditApi = Reddit.createInstalledFlowInstance(
-      clientId: "KE5DpJuRH0sNw1tWYQeerA",
+      clientId: envVars["REDDITECHCLIENTID"],
       userAgent: "Qwiddo",
       redirectUri: Uri.parse("reddit://success"),
     );
