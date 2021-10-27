@@ -1,4 +1,4 @@
-import 'package:f_redditech/views/profile_header.dart';
+import 'package:f_redditech/no_provider/views/profile_header.dart';
 import 'package:flutter/material.dart';
 import 'package:draw/draw.dart';
 

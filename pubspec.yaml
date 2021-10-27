@@ -35,6 +35,8 @@ dependencies:
   loading_animations: ^2.2.0
   intl: ^0.17.0
   expansion_tile_card: ^2.0.0
+  anim_search_bar: ^2.0.2
+  provider: ^6.0.1
 
 dev_dependencies:
   flutter_test:

@@ -1,8 +1,7 @@
-import 'package:f_redditech/controller/main_page_ctrl.dart';
-import 'package:f_redditech/controller/user_page_ctrl.dart';
-import 'package:f_redditech/views/user_page.dart';
+import 'package:f_redditech/no_provider/controller/search_page_ctrl.dart';
+import 'package:f_redditech/no_provider/controller/main_page_ctrl.dart';
+import 'package:f_redditech/no_provider/controller/user_page_ctrl.dart';
 import 'package:flutter/material.dart';
-import 'package:draw/draw.dart';
 
 class BasePage extends StatefulWidget {
   @override
@@ -13,6 +12,7 @@ class _BasePageState extends State<BasePage> {
 
   TextEditingController _controller = TextEditingController();
   int _selectedOption = 0;
+  String? query;
 
   @override
   void initState() {
@@ -27,6 +27,7 @@ class _BasePageState extends State<BasePage> {
 
   final _pageOptions = [
     MainPageController(),
+    SearchPageController(),
     UserPageController()
   ];
 
@@ -36,48 +37,36 @@ class _BasePageState extends State<BasePage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Container(
-          width: double.infinity,
-          height: 40,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(5)
-          ),
-          child: Center(
-            child: TextField(
-              controller: _controller,
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search),
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.clear),
-                  onPressed: () {
-                    _controller.clear();
-                  },
-                ),
-                border: InputBorder.none,
-                hintText: "Recherche..."
-              ),
+          child: Text("Redditech",
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 40
             ),
           ),
-        ),
+        )
       ),
       body: _pageOptions[_selectedOption],
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home, size: 30), label: 'Accueil'),
+          BottomNavigationBarItem(icon: Icon(Icons.search, size: 30), label: "Rechercher"),
           BottomNavigationBarItem(icon: Icon(Icons.account_circle, size: 30), label: 'Mon Profil'),
-//          BottomNavigationBarItem(icon: Icon(Icons.language, size: 30), label: 'Communautés'),
-//          BottomNavigationBarItem(icon: Icon(Icons.settings, size: 30), label: 'Paramètres')
+//        BottomNavigationBarItem(icon: Icon(Icons.language, size: 30), label: 'Communautés'),
+//        BottomNavigationBarItem(icon: Icon(Icons.settings, size: 30), label: 'Paramètres')
         ],
         elevation: 5.0,
-        currentIndex: _selectedOption,
+        selectedItemColor: Colors.black,
         onTap: (index) {
           setState(() {
             _selectedOption = index;
           });
         },
+        currentIndex: _selectedOption,
         backgroundColor: Colors.deepOrange,
         type: BottomNavigationBarType.fixed
       ),
-    ));
+    )
+    );
   }
 }

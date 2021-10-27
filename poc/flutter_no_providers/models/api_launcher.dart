@@ -74,6 +74,16 @@ class ApiLauncher {
     return (posts);
   }
 
+  Future<List<SubredditRef>> searchSubs(String query) async {
+    if (isFlowCreated() == false)
+      this.createRedditFlow();
+    return (redditApi.subreddits.searchByName(
+      query,
+      includeNsfw: true,
+      exact: false
+    ));
+  }
+
   Future<void> upvotePost(Submission upvotedPost) {
     return (upvotedPost.upvote());
   }
