@@ -2,7 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+/// Widget defining the [HomePage]
+///
+/// Uses [CachedNetworkImage] for background decoration and texts
 class HomePage extends StatefulWidget {
+
+  /// Constructs a new [HomePage] widget
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -42,7 +47,7 @@ class _MyHomePageState extends State<HomePage> {
                 onPressed: () {
                   Navigator.pushNamed(context, '/home');
                 },
-                child: new Tooltip(message: 'Connection', child: new Text("Connect to Redditech")),
+                child: new Tooltip(message: 'Connexion', child: new Text("Se connecter")),
               ),
             ),
           ),
@@ -50,7 +55,7 @@ class _MyHomePageState extends State<HomePage> {
           alignment: Alignment.center,
           child: Stack(
             children: <Widget>[
-              Text("Redditech\nRedditech is an application you can use such as the Reddit app with limited features.",
+              Text("Redditech\nRedditech est une application que vous pouvez utiliser de la même façon que le client reddit avec des fonctionalités limitées.",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 20,
@@ -60,7 +65,7 @@ class _MyHomePageState extends State<HomePage> {
                   ..color = Colors.white,
                 ),
               ),
-              Text("Redditech\nRedditech is an application you can use such as the Reddit app with limited features.",
+              Text("Redditech\nRedditech est une application que vous pouvez utiliser de la même façon que le client reddit avec des fonctionalités limitées.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 20,

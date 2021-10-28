@@ -1,6 +1,9 @@
 import 'package:loading_animations/loading_animations.dart';
 import 'package:flutter/material.dart';
 
+// reddit.subreddits.searchByName
+
+/// Widget defining a Loading Animation
 class LoadingScreen extends StatelessWidget {
 
   @override

@@ -3,16 +3,19 @@ import 'package:f_redditech/widgets/main_page.dart';
 import 'package:f_redditech/widgets/user_page.dart';
 import 'package:flutter/material.dart';
 
+/// Widget defining a [Widget] redirector
+///
+/// Uses a [BottomNavigationBar] and return the actual Page
 class BasePage extends StatefulWidget {
   @override
   _BasePageState createState() => _BasePageState();
 }
 
+/// [BasePage]'s main state manager
 class _BasePageState extends State<BasePage> {
 
-  TextEditingController _controller = TextEditingController();
+  /// Selected [BottomNavigationBar] option
   int _selectedOption = 0;
-  String? query;
 
   @override
   void initState() {
@@ -21,10 +24,10 @@ class _BasePageState extends State<BasePage> {
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 
+  /// List of [BottomNavigationBar] options
   final _pageOptions = [
     MainPage(),
     SearchPage(
@@ -35,7 +38,7 @@ class _BasePageState extends State<BasePage> {
 
   @override
   Widget build(BuildContext context) {
-    return (Scaffold(
+    return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Container(
@@ -46,7 +49,8 @@ class _BasePageState extends State<BasePage> {
               fontSize: 40
             ),
           ),
-        )
+        ),
+        backgroundColor: Colors.deepOrange,
       ),
       body: _pageOptions[_selectedOption],
       bottomNavigationBar: BottomNavigationBar(
@@ -68,7 +72,6 @@ class _BasePageState extends State<BasePage> {
         backgroundColor: Colors.deepOrange,
         type: BottomNavigationBarType.fixed
       ),
-    )
     );
   }
 }

@@ -3,17 +3,37 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+/// Widget defining the Profile Page Header
+///
+/// Uses [NetworkImage] widgets to display Profile image and Banner image
+/// and displays data such as display name, description and karma amount
 class ProfileHeader extends StatelessWidget {
 
+  /// Banner Picture url
   final String bannerPicture;
+
+  /// Profile Description
   final String profileDesc;
+
+  /// Profile Picture url
   final String profilePicture;
+
+  /// Account fullname
   final String fullName;
+
+  /// Account display name
   final String displayName;
+
+  /// Date exposing when the account has been created
   final DateTime createdDate;
+
+  /// Number of followers
   final int nbFollowers;
+
+  /// Karma amount value
   final int karmaNb;
 
+  /// Constructs a new [ProfileHeader] widget
   ProfileHeader({
     required this.bannerPicture,
     required this.profilePicture,
@@ -25,6 +45,7 @@ class ProfileHeader extends StatelessWidget {
     required this.nbFollowers,
   });
 
+  /// Compute numbers of days between to [DateTime] objects
   int daysBetween(DateTime from, DateTime to) {
     from = DateTime(from.year, from.month, from.day);
     to = DateTime(to.year, to.month, to.day);
@@ -72,7 +93,7 @@ class ProfileHeader extends StatelessWidget {
             height: 150.0,
             width: 150.0,
             child: CircleAvatar(
-              backgroundImage: NetworkImage(
+              backgroundImage: this.profilePicture.replaceAll("amp;", "") == "" ? null : NetworkImage(
                 (this.profilePicture.replaceAll("amp;", ""))
               ), // Image de profile
             ),

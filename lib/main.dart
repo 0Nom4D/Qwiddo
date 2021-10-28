@@ -20,7 +20,10 @@ void main() {
   );
 }
 
+/// Main App [Widget]
 class MyApp extends StatelessWidget {
+
+  /// Constructs the actual App [Widget]
   const MyApp({Key? key}) : super(key: key);
 
   @override

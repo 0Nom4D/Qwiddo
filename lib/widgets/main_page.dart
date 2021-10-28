@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:f_redditech/api_service/api_launcher.dart';
+import 'package:f_redditech/no_provider/views/loading_page.dart';
 import 'package:f_redditech/providers/settings_datas.dart';
 import 'package:f_redditech/providers/post_datas.dart';
 import 'package:f_redditech/models/post.dart';
@@ -8,8 +9,13 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:draw/draw.dart';
 
+/// A [Widget] Class that defines the actual MainPage Widget
+///
+/// MainPage uses Providers to get the post datas wrapped with [ListView.builder]
+/// and with [FutureBuilder].
 class MainPage extends StatefulWidget {
 
+  /// Constructs a MainPage Widget
   MainPage({Key? key}) : super(key: key);
 
   @override
@@ -17,39 +23,76 @@ class MainPage extends StatefulWidget {
 
 }
 
+/// Main widget's state defines the first state of the widget
+///
+/// _MainPageState uses SettingsData [Provider] and the Api Service to
+/// fetch [Subreddit] posts data.
 class _MainPageState extends State<MainPage> {
 
+  /// List of [Submissions] fetched from the [FrontPage]
   List<Submission> postCardsList = [];
 
   @override
   void initState() {
     SettingsData settingsData = Provider.of<SettingsData>(context, listen: false);
     PostDataModel postData = Provider.of<PostDataModel>(context, listen: false);
-    ApiLauncher.getFrontPagePosts(postData, settingsData);
+    ApiLauncher.getFrontPagePosts(postData, settingsData, true);
     super.initState();
+  }
+
+  /// Method designed to make a cooldown between fetching and [ListView] display
+  _fetchEntry() async {
+    await Future.delayed(Duration(milliseconds: 250));
   }
 
   @override
   Widget build(BuildContext context) {
-    PostDataModel postData = Provider.of<PostDataModel>(context);
+    PostDataModel postData = Provider.of<PostDataModel>(context, listen: false);
+    SettingsData settingsData = Provider.of<SettingsData>(context, listen: false);
 
-    return ListView.builder(
-      itemCount: postData.postTilesList.length,
-      itemBuilder: (context, index) {
-        return PostCard(
-          post: postData.postTilesList[index]
+    return FutureBuilder(
+      future: _fetchEntry(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting)
+          return LoadingScreen();
+        return Consumer<PostDataModel>(
+          builder: (context, provider, _) => NotificationListener<ScrollNotification>(
+            child: ListView.builder(
+              itemCount: provider.postTilesList.length,
+              itemBuilder: (context, index) {
+                return PostCard(
+                    post: provider.postTilesList[index]
+                );
+              }
+            ),
+            onNotification: (ScrollNotification scrollInfo) {
+              if (scrollInfo.metrics.atEdge) {
+                if (scrollInfo.metrics.pixels != 0)
+                  ApiLauncher.getFrontPagePosts(postData, settingsData, false);
+                else
+                  ApiLauncher.getFrontPagePosts(postData, settingsData, true);
+              }
+              return true;
+            }
+          ),
         );
       }
     );
   }
 }
 
+/// Widget defining the posts' [ExpansionTileCard]
+///
+/// Uses a [ExpansionTileCard], [MediaWidget] and an [OptionsBar] Widget
 class PostCard extends StatelessWidget {
 
+  /// [Post] class defining the post at a specific index
   final Post post;
 
+  /// Constructs a [PostCard] Widget
   PostCard({Key? key, required this.post}) : super(key: key);
 
+  /// Method computing time between two [DateTime] objects
   String timeBetween(DateTime from, DateTime to) {
     final nbSecondsFrom = from.second;
     final nbSecondsTo = to.second;
@@ -132,10 +175,13 @@ class PostCard extends StatelessWidget {
   }
 }
 
+/// Widget exposing a Media such as Image / Video
 class MediaWidget extends StatelessWidget {
 
+  /// [Post] class defining the post at a specific index
   final Post post;
 
+  /// Constructs a [MediaWidget] widget
   MediaWidget ({Key? key, required this.post}) : super(key: key);
 
   @override
@@ -172,13 +218,16 @@ class MediaWidget extends StatelessWidget {
   }
 }
 
+/// Widget exposing a bar of [IconButtons]
+///
+/// Uses an upvote [IconButton] and a downvote [IconButton]
 class OptionsBar extends StatelessWidget {
 
+  /// [Post] class defining the post at a specific index
   final Post post;
 
+  /// Constructs a [OptionsBar] Widget
   OptionsBar({Key? key, required this.post}) : super(key: key);
-
-//  final ApiLauncher redditApi = ApiLauncher();
 
   @override
   Widget build(BuildContext context) {
@@ -189,25 +238,22 @@ class OptionsBar extends StatelessWidget {
       children: <Widget>[
         IconButton(
           onPressed: () {
-//            redditApi.upvotePost(this.post);
+//            PostDataModel postData = Provider.of<PostDataModel>(context, listen: false);
+            print("Upvoted");
+//            postData.upVoteItem(this.post);
           },
           icon: Icon(Icons.arrow_upward),
         ),
         Text(this.post.upVotes.toString()),
         IconButton(
             onPressed: () {
-//              redditApi.downvotePost(this.post);
+//              PostDataModel postData = Provider.of<PostDataModel>(context, listen: false);
+              print("Downvoted");
+//              postData.downVoteItem(this.post);
             },
             icon: Icon(Icons.arrow_downward)
         ),
         Text(this.post.downVotes.toString()),
-        IconButton(
-            onPressed: () {
-              print("Page de commentaire");
-              // Commenter le post;
-            },
-            icon: Icon(Icons.comment)
-        )
       ],
     );
   }
