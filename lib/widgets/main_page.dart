@@ -1,9 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:f_redditech/api_service/api_launcher.dart';
-import 'package:f_redditech/no_provider/views/loading_page.dart';
-import 'package:f_redditech/providers/settings_datas.dart';
 import 'package:f_redditech/providers/post_datas.dart';
+import 'package:f_redditech/widgets/loading_page.dart';
 import 'package:f_redditech/models/post.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +33,8 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
-    SettingsData settingsData = Provider.of<SettingsData>(context, listen: false);
     PostDataModel postData = Provider.of<PostDataModel>(context, listen: false);
-    ApiLauncher.getFrontPagePosts(postData, settingsData, true);
+    ApiLauncher.getFrontPagePosts(postData, true);
     super.initState();
   }
 
@@ -47,36 +45,106 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    PostDataModel postData = Provider.of<PostDataModel>(context, listen: false);
-    SettingsData settingsData = Provider.of<SettingsData>(context, listen: false);
+    PostDataModel postData = Provider.of<PostDataModel>(context);
 
-    return FutureBuilder(
-      future: _fetchEntry(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting)
-          return LoadingScreen();
-        return Consumer<PostDataModel>(
-          builder: (context, provider, _) => NotificationListener<ScrollNotification>(
-            child: ListView.builder(
-              itemCount: provider.postTilesList.length,
-              itemBuilder: (context, index) {
-                return PostCard(
-                    post: provider.postTilesList[index]
-                );
-              }
+    return Stack(
+      children: [
+        FutureBuilder(
+          future: _fetchEntry(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting)
+              return LoadingScreen();
+            return Container(
+              margin: EdgeInsets.fromLTRB(5.0, 55, 5.0, 0.0),
+              child: Consumer<PostDataModel>(
+                builder: (context, provider, _) => NotificationListener<ScrollNotification>(
+                  child: ListView.builder(
+                    itemCount: provider.postTilesList.length,
+                    itemBuilder: (context, index) {
+                      return PostCard(
+                        post: provider.postTilesList[index]
+                      );
+                    }
+                  ),
+                  onNotification: (ScrollNotification scrollInfo) {
+                    if (scrollInfo.metrics.atEdge) {
+                      if (scrollInfo.metrics.pixels != 0)
+                        ApiLauncher.getFrontPagePosts(provider, false);
+                      else
+                        ApiLauncher.getFrontPagePosts(provider, true);
+                    }
+                    return true;
+                  }
+                ),
+              )
+            );
+          }
+        ),
+        Container(
+          alignment: Alignment.topCenter,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: Colors.white.withOpacity(0.2),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
             ),
-            onNotification: (ScrollNotification scrollInfo) {
-              if (scrollInfo.metrics.atEdge) {
-                if (scrollInfo.metrics.pixels != 0)
-                  ApiLauncher.getFrontPagePosts(postData, settingsData, false);
-                else
-                  ApiLauncher.getFrontPagePosts(postData, settingsData, true);
-              }
-              return true;
-            }
+            onPressed: () {
+              showModalBottomSheet<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return Container(
+                    child: Wrap(
+                      children: [
+                        ListTile(
+                          title: Text("Nouveautés"),
+                          onTap: () {
+                            postData.changeCategory("new", "Nouveautés");
+                            Navigator.pop(context);
+                          }
+                        ),
+                        ListTile(
+                          title: Text("Au top"),
+                          onTap: () {
+                            postData.changeCategory("top", "Au top");
+                            Navigator.pop(context);
+                          }
+                        ),
+                        ListTile(
+                          title: Text("Populaires"),
+                          onTap: () {
+                            postData.changeCategory("hot", "Populaires");
+                            Navigator.pop(context);
+                          }
+                        ),
+                        ListTile(
+                          title: Text("Meilleur"),
+                          onTap: () {
+                            postData.changeCategory("best", "Meilleur");
+                            Navigator.pop(context);
+                          }
+                        ),
+                        ListTile(
+                          title: Text("En hausse"),
+                          onTap: () {
+                            postData.changeCategory("rising", "En hausse");
+                            Navigator.pop(context);
+                          }
+                        )
+                      ],
+                    )
+                  );
+                }
+              );
+            },
+            child: Text(postData.categoryType,
+              style: TextStyle(
+                color: Colors.black
+              ),
+            ),
           ),
-        );
-      }
+        )
+      ]
     );
   }
 }

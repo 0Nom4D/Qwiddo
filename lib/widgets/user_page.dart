@@ -1,5 +1,5 @@
 import 'package:f_redditech/api_service/api_launcher.dart';
-import 'package:f_redditech/no_provider/views/loading_page.dart';
+import 'package:f_redditech/widgets/loading_page.dart';
 import 'package:f_redditech/widgets/profile_header.dart';
 import 'package:f_redditech/providers/user_datas.dart';
 import 'package:provider/provider.dart';

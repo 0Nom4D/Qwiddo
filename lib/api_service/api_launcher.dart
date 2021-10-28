@@ -1,9 +1,8 @@
+import 'package:flutter_web_auth/flutter_web_auth.dart';
+import 'package:f_redditech/providers/post_datas.dart';
+import 'package:f_redditech/providers/user_datas.dart';
 import 'package:f_redditech/models/post.dart';
 import 'package:f_redditech/models/user.dart';
-import 'package:f_redditech/providers/post_datas.dart';
-import 'package:f_redditech/providers/settings_datas.dart';
-import 'package:f_redditech/providers/user_datas.dart';
-import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:draw/draw.dart';
 
 /// Api Service Singleton Class
@@ -70,7 +69,7 @@ class ApiLauncher {
   /// posts datas using the [PostDataModel] [Provider].
   /// If [getWholeNew] boolean is true, it wipes the post data list and re-fill it.
   /// If [getWholeNew] boolean is false, it adds at the end of the list.
-  static getFrontPagePosts(PostDataModel postsDataNotifier, SettingsData settingsDataNotifier, bool getWholeNew) async {
+  static getFrontPagePosts(PostDataModel postsDataNotifier, bool getWholeNew) async {
     ApiLauncher redditApi = ApiLauncher();
     Submission fetchedSubmission;
     List<Post> posts = [];
@@ -82,40 +81,40 @@ class ApiLauncher {
       await redditApi.createRedditFlow();
     if (getWholeNew == false)
       after = postsDataNotifier.getLastFetchedItem();
-    switch (settingsDataNotifier.fetchedCategory) {
+    switch (postsDataNotifier.fetchedCategory) {
       case "new":
         chosenMethod = redditApi.redditApi.front.newest(
-          limit: settingsDataNotifier.fetchedLimit,
+          limit: 25,
           after: after
         );
         break;
       case "hot":
         chosenMethod = redditApi.redditApi.front.hot(
-          limit: settingsDataNotifier.fetchedLimit,
+          limit: 25,
           after: after
         );
         break;
       case "top":
         chosenMethod = redditApi.redditApi.front.top(
-          limit: settingsDataNotifier.fetchedLimit,
+          limit: 25,
           after: after
         );
         break;
       case "rising":
         chosenMethod = redditApi.redditApi.front.rising(
-          limit: settingsDataNotifier.fetchedLimit,
+          limit: 25,
           after: after
         );
         break;
       case "best":
         chosenMethod = redditApi.redditApi.front.best(
-          limit: settingsDataNotifier.fetchedLimit,
+          limit: 25,
           after: after
         );
         break;
       case "controversial":
         chosenMethod = redditApi.redditApi.front.controversial(
-          limit: settingsDataNotifier.fetchedLimit,
+          limit: 25,
           after: after
         );
         break;

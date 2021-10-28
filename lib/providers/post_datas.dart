@@ -1,3 +1,4 @@
+import 'package:f_redditech/api_service/api_launcher.dart';
 import 'package:f_redditech/models/post.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,8 @@ class PostDataModel extends ChangeNotifier {
 
   /// [List] of every post fetched from Reddit Api
   List<Post> postTilesList = [];
+  String categoryType = "Nouveautés";
+  String fetchedCategory = "new";
 
   /// Add a post to the fetched [List]
   addPostTileInList(Post newPost) {
@@ -38,6 +41,13 @@ class PostDataModel extends ChangeNotifier {
   setPostList(List<Post> postList) {
     postTilesList = [];
     postTilesList = postList;
+    notifyListeners();
+  }
+
+  changeCategory(String newCategory, String newCategoryType) {
+    categoryType = newCategoryType;
+    fetchedCategory = newCategory;
+    ApiLauncher.getFrontPagePosts(this, true);
     notifyListeners();
   }
 

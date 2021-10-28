@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the getFrontPagePosts method from the ApiLauncher class, for the Dart programming language.">
+  <title>getFrontPagePosts method - ApiLauncher class - api_launcher library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">f_redditech</a></li>
+    <li><a href="../../api_service_api_launcher/api_service_api_launcher-library.html">api_launcher</a></li>
+    <li><a href="../../api_service_api_launcher/ApiLauncher-class.html">ApiLauncher</a></li>
+    <li class="self-crumb">getFrontPagePosts method</li>
+  </ol>
+  <div class="self-name">getFrontPagePosts</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-method">getFrontPagePosts</span> method 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype">dynamic</span>
+<span class="name ">getFrontPagePosts</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="getFrontPagePosts-param-postsDataNotifier"><span class="type-annotation"><a href="../../providers_post_datas/PostDataModel-class.html">PostDataModel</a></span> <span class="parameter-name">postsDataNotifier</span>, </span></li>
+<li><span class="parameter" id="getFrontPagePosts-param-getWholeNew"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">getWholeNew</span></span></li>
+</ol>)
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Static Method Fetching the <a href="https://pub.dev/documentation/draw/1.0.2/draw/Reddit-class.html">Reddit</a> front page posts</p>
+<p>Cheks if the installed flow is created. It creates it if the installed flow
+isn't created and fetch the posts according to the filter. Store the
+posts datas using the <a href="../../providers_post_datas/PostDataModel-class.html">PostDataModel</a> <a href="https://pub.dev/documentation/provider/6.0.1/provider/Provider-class.html">Provider</a>.
+If <code>getWholeNew</code> boolean is true, it wipes the post data list and re-fill it.
+If <code>getWholeNew</code> boolean is false, it adds at the end of the list.</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">static getFrontPagePosts(PostDataModel postsDataNotifier, bool getWholeNew) async {
+  ApiLauncher redditApi = ApiLauncher();
+  Submission fetchedSubmission;
+  List&lt;Post&gt; posts = [];
+  var chosenMethod;
+  String? after;
+  Post newPost;
+
+  if (redditApi.isFlowCreated() == false)
+    await redditApi.createRedditFlow();
+  if (getWholeNew == false)
+    after = postsDataNotifier.getLastFetchedItem();
+  switch (postsDataNotifier.fetchedCategory) {
+    case &quot;new&quot;:
+      chosenMethod = redditApi.redditApi.front.newest(
+        limit: 25,
+        after: after
+      );
+      break;
+    case &quot;hot&quot;:
+      chosenMethod = redditApi.redditApi.front.hot(
+        limit: 25,
+        after: after
+      );
+      break;
+    case &quot;top&quot;:
+      chosenMethod = redditApi.redditApi.front.top(
+        limit: 25,
+        after: after
+      );
+      break;
+    case &quot;rising&quot;:
+      chosenMethod = redditApi.redditApi.front.rising(
+        limit: 25,
+        after: after
+      );
+      break;
+    case &quot;best&quot;:
+      chosenMethod = redditApi.redditApi.front.best(
+        limit: 25,
+        after: after
+      );
+      break;
+    case &quot;controversial&quot;:
+      chosenMethod = redditApi.redditApi.front.controversial(
+        limit: 25,
+        after: after
+      );
+      break;
+  }
+  await for (var frontPost in chosenMethod) {
+    fetchedSubmission = frontPost as Submission;
+    newPost = Post.fromMap(fetchedSubmission);
+    posts.add(newPost);
+  }
+  if (getWholeNew == false)
+    postsDataNotifier.addPostListToList(posts);
+  else
+    postsDataNotifier.setPostList(posts);
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../../index.html">f_redditech</a></li>
+  <li><a href="../../api_service_api_launcher/api_service_api_launcher-library.html">api_launcher</a></li>
+  <li><a href="../../api_service_api_launcher/ApiLauncher-class.html">ApiLauncher</a></li>
+  <li class="self-crumb">getFrontPagePosts method</li>
+</ol>
+
+
+    <h5>ApiLauncher class</h5>
+    <ol>
+
+    <li class="section-title"><a href="../../api_service_api_launcher/ApiLauncher-class.html#constructors">Constructors</a></li>
+    <li><a href="../../api_service_api_launcher/ApiLauncher/ApiLauncher.html">ApiLauncher</a></li>
+
+
+    <li class="section-title">
+      <a href="../../api_service_api_launcher/ApiLauncher-class.html#instance-properties">Properties</a>
+    </li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li><a href="../../api_service_api_launcher/ApiLauncher/isConnected.html">isConnected</a></li>
+    <li><a href="../../api_service_api_launcher/ApiLauncher/redditApi.html">redditApi</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+
+    <li class="section-title"><a href="../../api_service_api_launcher/ApiLauncher-class.html#instance-methods">Methods</a></li>
+    <li><a href="../../api_service_api_launcher/ApiLauncher/createRedditFlow.html">createRedditFlow</a></li>
+    <li><a href="../../api_service_api_launcher/ApiLauncher/isFlowCreated.html">isFlowCreated</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
+
+    <li class="section-title inherited"><a href="../../api_service_api_launcher/ApiLauncher-class.html#operators">Operators</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+    <li class="section-title"><a href="../../api_service_api_launcher/ApiLauncher-class.html#static-methods">Static methods</a></li>
+    <li><a href="../../api_service_api_launcher/ApiLauncher/cancelVote.html">cancelVote</a></li>
+    <li><a href="../../api_service_api_launcher/ApiLauncher/downvotePost.html">downvotePost</a></li>
+    <li><a href="../../api_service_api_launcher/ApiLauncher/getFrontPagePosts.html">getFrontPagePosts</a></li>
+    <li><a href="../../api_service_api_launcher/ApiLauncher/getMe.html">getMe</a></li>
+    <li><a href="../../api_service_api_launcher/ApiLauncher/searchSubs.html">searchSubs</a></li>
+    <li><a href="../../api_service_api_launcher/ApiLauncher/upvotePost.html">upvotePost</a></li>
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    f_redditech
+      1.0.0+1
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

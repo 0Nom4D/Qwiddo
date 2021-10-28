@@ -1,4 +1,3 @@
-import 'package:f_redditech/providers/settings_datas.dart';
 import 'package:f_redditech/providers/post_datas.dart';
 import 'package:f_redditech/providers/user_datas.dart';
 import 'package:f_redditech/widgets/home_page.dart';
@@ -12,7 +11,6 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => PostDataModel()),
-        ChangeNotifierProvider(create: (_) => SettingsData()),
         ChangeNotifierProvider(create: (_) => UserDataModel())
       ],
       child: const MyApp(),
