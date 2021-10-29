@@ -1,9 +1,12 @@
-import 'package:f_redditech/api_service/api_launcher.dart';
-import 'package:f_redditech/models/sub_info.dart';
 import 'package:f_redditech/providers/subreddit_post_datas.dart';
+import 'package:f_redditech/api_service/api_launcher.dart';
+import 'package:f_redditech/widgets/main_page.dart';
+import 'package:f_redditech/models/sub_info.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
+import 'loading_page.dart';
 
 class SubredditPage extends StatefulWidget {
 
@@ -24,12 +27,111 @@ class _SubredditPageState extends State<SubredditPage> {
     super.initState();
   }
 
+  /// Method designed to make a cooldown between fetching and [ListView] display
+  _fetchEntry() async {
+    await Future.delayed(Duration(milliseconds: 250));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<SubRedditModel>(
-      builder: (context, provider, child) {
-        return SubredditHeader(
-          subRedditInfo: provider.subredditInfo,
+    SubRedditModel subredditData = Provider.of<SubRedditModel>(context);
+    ScrollController listController = ScrollController();
+
+    return FutureBuilder(
+      future: _fetchEntry(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting)
+          return LoadingScreen();
+        return Stack(
+          children: <Widget>[
+            SubredditHeader(
+              subRedditInfo: Provider.of<SubRedditModel>(context).subredditInfo,
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(0, (MediaQuery.of(context).size.height) - 275, 0, 0),
+              child: Consumer<SubRedditModel>(
+                builder: (context, provider, _) =>
+                NotificationListener<ScrollEndNotification>(
+                  child: ListView.builder(
+                    controller: listController,
+                    itemCount: provider.subredditPostTilesList.length,
+                    itemBuilder: (context, index) {
+                      return PostCard(
+                        post: provider.subredditPostTilesList[index],
+                      );
+                    }
+                  ),
+                  onNotification: (ScrollEndNotification scrollInfo) {
+                    if (listController.position.atEdge) {
+                      if (listController.position.pixels != 0)
+                        ApiLauncher.getSubredditPosts(provider, false);
+                      else
+                        ApiLauncher.getSubredditPosts(provider, true);
+                    }
+                    return true;
+                  }
+                )
+              )
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(0, (MediaQuery.of(context).size.height) - 325, 0, 0),
+              alignment: Alignment.topCenter,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.white.withOpacity(0.2),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+                onPressed: () {
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Container(
+                        child: Wrap(
+                          children: [
+                            ListTile(
+                                title: Text("Nouveautés"),
+                                onTap: () {
+                                  subredditData.changeCategory("new", "Nouveautés");
+                                  Navigator.pop(context);
+                                }
+                            ),
+                            ListTile(
+                                title: Text("Au top"),
+                                onTap: () {
+                                  subredditData.changeCategory("top", "Au top");
+                                  Navigator.pop(context);
+                                }
+                            ),
+                            ListTile(
+                                title: Text("Populaires"),
+                                onTap: () {
+                                  subredditData.changeCategory("hot", "Populaires");
+                                  Navigator.pop(context);
+                                }
+                            ),
+                            ListTile(
+                                title: Text("En hausse"),
+                                onTap: () {
+                                  subredditData.changeCategory("rising", "En hausse");
+                                  Navigator.pop(context);
+                                }
+                            )
+                          ],
+                        )
+                      );
+                    }
+                  );
+                },
+                child: Text(subredditData.categoryType,
+                  style: TextStyle(
+                      color: Colors.black
+                  ),
+                ),
+              ),
+            )
+          ]
         );
       }
     );
@@ -50,7 +152,7 @@ class SubredditHeader extends StatelessWidget {
         Column(
           children: <Widget>[
             Container(
-              height: 325.0,
+              height: 225.0,
               decoration: BoxDecoration(
                 color: Colors.white54,
                 image: subRedditInfo!.bannerImg == "" ? null : DecorationImage(
@@ -67,7 +169,7 @@ class SubredditHeader extends StatelessWidget {
           ],
         ),
         Positioned(
-          top: 200.0,
+          top: 100.0,
           left: 25.0,
           child: Container(
             height: 150.0,
@@ -79,11 +181,11 @@ class SubredditHeader extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: 355.0,
+          top: 255.0,
           left: 25.0,
           child: RichText(
             text: TextSpan(
-              text: subRedditInfo!.subName,
+              text: "r/" + subRedditInfo!.subName,
               style: TextStyle(
                 fontSize: 20.0,
                 color: Colors.black,
@@ -92,8 +194,15 @@ class SubredditHeader extends StatelessWidget {
           ),
         ),
         Positioned(
+          top: 255,
           left: (MediaQuery.of(context).size.width) - 125,
           child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: Colors.deepOrange,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
             onPressed: () {
               SubRedditModel thisSubReddit = Provider.of<SubRedditModel>(context, listen: false);
               thisSubReddit.subscribe();
@@ -102,7 +211,7 @@ class SubredditHeader extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: 390,
+          top: 290,
           left: 25.0,
           child: Text(
             subRedditInfo!.nbFollowers.toString() + " membres",
@@ -113,7 +222,7 @@ class SubredditHeader extends StatelessWidget {
           )
         ),
         Positioned(
-          top: 425,
+          top: 325,
           left: 25,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,

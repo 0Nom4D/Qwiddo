@@ -58,7 +58,6 @@ class _BasePageState extends State<BasePage> {
           BottomNavigationBarItem(icon: Icon(Icons.home, size: 30), label: 'Accueil'),
           BottomNavigationBarItem(icon: Icon(Icons.search, size: 30), label: "Rechercher"),
           BottomNavigationBarItem(icon: Icon(Icons.account_circle, size: 30), label: 'Mon Profil'),
-//        BottomNavigationBarItem(icon: Icon(Icons.language, size: 30), label: 'Communautés'),
 //        BottomNavigationBarItem(icon: Icon(Icons.settings, size: 30), label: 'Paramètres')
         ],
         elevation: 5.0,

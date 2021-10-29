@@ -73,6 +73,7 @@ class ApiLauncher {
   /// If [getWholeNew] boolean is true, it wipes the post data list and re-fill it.
   /// If [getWholeNew] boolean is false, it adds at the end of the list.
   static getFrontPagePosts(PostDataModel postsDataNotifier, bool getWholeNew) async {
+    List<SubredditRef> fetchedForIcon = [];
     ApiLauncher redditApi = ApiLauncher();
     Submission fetchedSubmission;
     List<Post> posts = [];
@@ -125,6 +126,14 @@ class ApiLauncher {
     await for (var frontPost in chosenMethod) {
       fetchedSubmission = frontPost as Submission;
       newPost = Post.fromMap(fetchedSubmission);
+      fetchedForIcon = await redditApi.redditApi.subreddits.searchByName(newPost.subReddit, exact: true);
+      if (fetchedForIcon.length > 0) {
+        Subreddit tmp = (await fetchedForIcon[0].populate());
+        if (tmp.data!["mobile_banner_image"].toString() == "")
+          newPost.subIcon = tmp.data!["mobile_banner_image"].toString().replaceAll("amp;", "");
+        else
+          newPost.subIcon = tmp.data!["banner_background_image"].toString().replaceAll("amp;", "");
+      }
       posts.add(newPost);
     }
     if (getWholeNew == false)
@@ -139,7 +148,7 @@ class ApiLauncher {
   Future<List<Subreddit>> searchSubs(String query) async {
     ApiLauncher redditApi = ApiLauncher();
     List<Subreddit> fetchedSubs = [];
-    List<SubredditRef> fetched;
+    List<SubredditRef> fetched = [];
 
     if (redditApi.isFlowCreated() == false)
       await redditApi.createRedditFlow();
@@ -159,10 +168,12 @@ class ApiLauncher {
   }
 
   static getSubredditPosts(SubRedditModel subRedditDatas, bool getWholeNew) async {
+    List<SubredditRef> fetchedForIcon = [];
     ApiLauncher redditApi = ApiLauncher();
     Submission fetchedSubmission;
     List<Post> posts = [];
     var chosenMethod;
+    Subreddit tmp;
     String? after;
     Post newPost;
 
@@ -205,6 +216,14 @@ class ApiLauncher {
     await for (var frontPost in chosenMethod) {
       fetchedSubmission = frontPost as Submission;
       newPost = Post.fromMap(fetchedSubmission);
+      fetchedForIcon = await redditApi.redditApi.subreddits.searchByName(newPost.subReddit, exact: true);
+      if (fetchedForIcon.length > 0) {
+        tmp = (await fetchedForIcon[0].populate());
+        if (tmp.data!["mobile_banner_image"].toString() == "")
+          newPost.subIcon = tmp.data!["mobile_banner_image"].toString().replaceAll("amp;", "");
+        else
+          newPost.subIcon = tmp.data!["banner_background_image"].toString().replaceAll("amp;", "");
+      }
       posts.add(newPost);
     }
     if (getWholeNew == false)

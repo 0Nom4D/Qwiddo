@@ -9,6 +9,8 @@ class Post {
   /// Post body
   String body = "";
 
+  String subIcon = "";
+
   /// Post subreddit's name
   String subReddit = "";
 

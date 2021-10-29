@@ -80,7 +80,7 @@ class _SearchPageState extends State<SearchPage> {
             leading: CircleAvatar(
               backgroundImage: post!.iconImg == "" ? null : NetworkImage(post.iconImg),
             ),
-            title: Text(post.subName),
+            title: Text("r/" + post.subName),
             isThreeLine: true,
             subtitle: Text(post.nbFollowers.toString() + " membres"),
             onTap: () {

@@ -196,8 +196,7 @@ class PostCard extends StatelessWidget {
         expandedColor: Colors.white,
         key: postCard,
         leading: CircleAvatar(
-          backgroundImage: NetworkImage(
-            "https://media.tenor.com/images/e627ecf80ad5b216c47a6fb939a51890/tenor.gif")
+          backgroundImage: post.subIcon == "" ? null : NetworkImage(post.subIcon)
         ),
         title: Text(post.subReddit),
         subtitle: Text(post.username + " • " + totalTime),
