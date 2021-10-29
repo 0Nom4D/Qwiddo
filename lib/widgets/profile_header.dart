@@ -141,7 +141,7 @@ class ProfileHeader extends StatelessWidget {
             children: <Widget>[
               SizedBox(
                 width: (MediaQuery.of(context).size.width) - 25,
-                child: Text(this.profileDesc != "" ? this.profileDesc : "No description...",
+                child: Text(this.profileDesc != "" ? this.profileDesc : "Pas de description...",
                   style: TextStyle(
                       fontSize: 15.0,
                       color: Colors.black

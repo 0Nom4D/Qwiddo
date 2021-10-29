@@ -1,3 +1,5 @@
+import 'package:f_redditech/models/sub_info.dart';
+import 'package:f_redditech/providers/subreddit_post_datas.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:f_redditech/providers/post_datas.dart';
 import 'package:f_redditech/providers/user_datas.dart';
@@ -28,7 +30,6 @@ class ApiLauncher {
   /// Connects the user to [Reddit] using Auth02
   Future<void> createRedditFlow() async {
 //    Map<String, String> envVars = Platform.environment;
-
     redditApi = Reddit.createInstalledFlowInstance(
       clientId: "KE5DpJuRH0sNw1tWYQeerA",
       userAgent: "Qwiddo",
@@ -39,7 +40,9 @@ class ApiLauncher {
         url: authUrl.toString(),
         callbackUrlScheme: "reddit"
     );
-    String? code = Uri.parse(result).queryParameters['code'];
+    String? code = Uri
+        .parse(result)
+        .queryParameters['code'];
     await redditApi.auth.authorize(code.toString());
     isConnected = true;
   }
@@ -133,16 +136,89 @@ class ApiLauncher {
   /// Static Method Fetch Subs using the [searchByName] Method
   ///
   /// Fetch a list of [Subreddits] depending the query string [query]
-  static Future<List<SubredditRef>> searchSubs(String query) async {
+  Future<List<Subreddit>> searchSubs(String query) async {
+    ApiLauncher redditApi = ApiLauncher();
+    List<Subreddit> fetchedSubs = [];
+    List<SubredditRef> fetched;
+
+    if (redditApi.isFlowCreated() == false)
+      await redditApi.createRedditFlow();
+    fetched = await redditApi.redditApi.subreddits.searchByName(query);
+    for (SubredditRef sub in fetched) {
+      fetchedSubs.add(await sub.populate());
+    }
+    return (fetchedSubs);
+  }
+
+  static getUserSubreddits(UserDataModel userDataNotifier) async {
     ApiLauncher redditApi = ApiLauncher();
 
     if (redditApi.isFlowCreated() == false)
       await redditApi.createRedditFlow();
-    return (await redditApi.redditApi.subreddits.searchByName(
-      query,
-      includeNsfw: true,
-      exact: false
-    ));
+    userDataNotifier.userData.subbedThreads = await redditApi.redditApi.user.subreddits().toList();
+  }
+
+  static getSubredditPosts(SubRedditModel subRedditDatas, bool getWholeNew) async {
+    ApiLauncher redditApi = ApiLauncher();
+    Submission fetchedSubmission;
+    List<Post> posts = [];
+    var chosenMethod;
+    String? after;
+    Post newPost;
+
+    if (redditApi.isFlowCreated() == false)
+      await redditApi.createRedditFlow();
+    if (getWholeNew == false)
+      after = subRedditDatas.getLastFetchedItem();
+    switch (subRedditDatas.fetchedCategory) {
+      case "new":
+        chosenMethod = subRedditDatas.subredditInfo.rawData!.newest(
+            limit: 25,
+            after: after
+        );
+        break;
+      case "hot":
+        chosenMethod = subRedditDatas.subredditInfo.rawData!.hot(
+            limit: 25,
+            after: after
+        );
+        break;
+      case "top":
+        chosenMethod = subRedditDatas.subredditInfo.rawData!.top(
+            limit: 25,
+            after: after
+        );
+        break;
+      case "rising":
+        chosenMethod = subRedditDatas.subredditInfo.rawData!.rising(
+            limit: 25,
+            after: after
+        );
+        break;
+      case "controversial":
+        chosenMethod = subRedditDatas.subredditInfo.rawData!.controversial(
+            limit: 25,
+            after: after
+        );
+        break;
+    }
+    await for (var frontPost in chosenMethod) {
+      fetchedSubmission = frontPost as Submission;
+      newPost = Post.fromMap(fetchedSubmission);
+      posts.add(newPost);
+    }
+    if (getWholeNew == false)
+      subRedditDatas.addPostListToList(posts);
+    else
+      subRedditDatas.setPostList(posts);
+  }
+
+  static subscribeToSub(Subreddit targetedSub) async {
+    await targetedSub.subscribe();
+  }
+
+  static unsubscribeToSub(Subreddit targetedSub) async {
+    await targetedSub.unsubscribe();
   }
 
   /// Static Method Upvoting a Submission Post

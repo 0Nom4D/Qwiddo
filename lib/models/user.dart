@@ -1,4 +1,5 @@
 import 'package:draw/draw.dart';
+import 'package:f_redditech/api_service/api_launcher.dart';
 
 /// Class defining a User Profile
 class UserData {
@@ -26,6 +27,8 @@ class UserData {
 
   /// Karma amount value
   int karmaAmount = 0;
+
+  List<Subreddit> subbedThreads = [];
 
   /// Constructs an empty [UserData] object
   UserData();

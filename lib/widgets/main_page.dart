@@ -45,106 +45,109 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    ScrollController listController = ScrollController();
     PostDataModel postData = Provider.of<PostDataModel>(context);
 
-    return Stack(
-      children: [
-        FutureBuilder(
-          future: _fetchEntry(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting)
-              return LoadingScreen();
-            return Container(
+    return FutureBuilder(
+      future: _fetchEntry(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting)
+          return LoadingScreen();
+        return Stack(
+          children: [
+            Container(
               margin: EdgeInsets.fromLTRB(5.0, 55, 5.0, 0.0),
               child: Consumer<PostDataModel>(
-                builder: (context, provider, _) => NotificationListener<ScrollNotification>(
-                  child: ListView.builder(
-                    itemCount: provider.postTilesList.length,
-                    itemBuilder: (context, index) {
-                      return PostCard(
-                        post: provider.postTilesList[index]
-                      );
+                builder: (context, provider, _) =>
+                  NotificationListener<ScrollEndNotification>(
+                    child: ListView.builder(
+                      controller: listController,
+                      itemCount: provider.postTilesList.length,
+                      itemBuilder: (context, index) {
+                        return PostCard(
+                            post: provider.postTilesList[index]
+                        );
+                      }
+                    ),
+                    onNotification: (ScrollEndNotification scrollInfo) {
+                      if (listController.position.atEdge) {
+                        if (listController.position.pixels != 0)
+                          ApiLauncher.getFrontPagePosts(provider, false);
+                        else
+                          ApiLauncher.getFrontPagePosts(provider, true);
+                      }
+                      return true;
                     }
                   ),
-                  onNotification: (ScrollNotification scrollInfo) {
-                    if (scrollInfo.metrics.atEdge) {
-                      if (scrollInfo.metrics.pixels != 0)
-                        ApiLauncher.getFrontPagePosts(provider, false);
-                      else
-                        ApiLauncher.getFrontPagePosts(provider, true);
-                    }
-                    return true;
-                  }
+                )
+              ),
+            Container(
+              alignment: Alignment.topCenter,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.white.withOpacity(0.2),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
                 ),
-              )
-            );
-          }
-        ),
-        Container(
-          alignment: Alignment.topCenter,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Colors.white.withOpacity(0.2),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
-              ),
-            ),
-            onPressed: () {
-              showModalBottomSheet<void>(
-                context: context,
-                builder: (BuildContext context) {
-                  return Container(
-                    child: Wrap(
-                      children: [
-                        ListTile(
-                          title: Text("Nouveautés"),
-                          onTap: () {
-                            postData.changeCategory("new", "Nouveautés");
-                            Navigator.pop(context);
-                          }
-                        ),
-                        ListTile(
-                          title: Text("Au top"),
-                          onTap: () {
-                            postData.changeCategory("top", "Au top");
-                            Navigator.pop(context);
-                          }
-                        ),
-                        ListTile(
-                          title: Text("Populaires"),
-                          onTap: () {
-                            postData.changeCategory("hot", "Populaires");
-                            Navigator.pop(context);
-                          }
-                        ),
-                        ListTile(
-                          title: Text("Meilleur"),
-                          onTap: () {
-                            postData.changeCategory("best", "Meilleur");
-                            Navigator.pop(context);
-                          }
-                        ),
-                        ListTile(
-                          title: Text("En hausse"),
-                          onTap: () {
-                            postData.changeCategory("rising", "En hausse");
-                            Navigator.pop(context);
-                          }
+                onPressed: () {
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Container(
+                        child: Wrap(
+                          children: [
+                            ListTile(
+                              title: Text("Nouveautés"),
+                              onTap: () {
+                                postData.changeCategory("new", "Nouveautés");
+                                Navigator.pop(context);
+                              }
+                            ),
+                            ListTile(
+                              title: Text("Au top"),
+                              onTap: () {
+                                postData.changeCategory("top", "Au top");
+                                Navigator.pop(context);
+                              }
+                            ),
+                            ListTile(
+                              title: Text("Populaires"),
+                              onTap: () {
+                                postData.changeCategory("hot", "Populaires");
+                                Navigator.pop(context);
+                              }
+                            ),
+                            ListTile(
+                              title: Text("Meilleur"),
+                              onTap: () {
+                                postData.changeCategory("best", "Meilleur");
+                                Navigator.pop(context);
+                              }
+                            ),
+                            ListTile(
+                              title: Text("En hausse"),
+                              onTap: () {
+                                postData.changeCategory("rising", "En hausse");
+                                Navigator.pop(context);
+                              }
+                            )
+                          ],
                         )
-                      ],
-                    )
+                      );
+                    }
                   );
-                }
-              );
-            },
-            child: Text(postData.categoryType,
-              style: TextStyle(
-                color: Colors.black
+                },
+                child: Text(postData.categoryType,
+                  style: TextStyle(
+                      color: Colors.black
+                  ),
+                ),
               ),
-            ),
-          ),
-        )
-      ]
+            )
+          ]
+        );
+      }
     );
   }
 }
