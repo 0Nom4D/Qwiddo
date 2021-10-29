@@ -1,8 +1,8 @@
-import 'package:f_redditech/models/sub_info.dart';
 import 'package:f_redditech/providers/subreddit_post_datas.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:f_redditech/providers/post_datas.dart';
 import 'package:f_redditech/providers/user_datas.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:f_redditech/models/post.dart';
 import 'package:f_redditech/models/user.dart';
 import 'package:draw/draw.dart';
@@ -29,9 +29,12 @@ class ApiLauncher {
   ///
   /// Connects the user to [Reddit] using Auth02
   Future<void> createRedditFlow() async {
-//    Map<String, String> envVars = Platform.environment;
+    String? apiKey = dotenv.env['QWIDDO_API_KEY'];
+
+    if (apiKey == null)
+      return;
     redditApi = Reddit.createInstalledFlowInstance(
-      clientId: "KE5DpJuRH0sNw1tWYQeerA",
+      clientId: apiKey,
       userAgent: "Qwiddo",
       redirectUri: Uri.parse("reddit://success"),
     );
