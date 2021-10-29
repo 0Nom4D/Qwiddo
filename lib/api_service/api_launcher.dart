@@ -129,10 +129,7 @@ class ApiLauncher {
       fetchedForIcon = await redditApi.redditApi.subreddits.searchByName(newPost.subReddit, exact: true);
       if (fetchedForIcon.length > 0) {
         Subreddit tmp = (await fetchedForIcon[0].populate());
-        if (tmp.data!["mobile_banner_image"].toString() == "")
-          newPost.subIcon = tmp.data!["mobile_banner_image"].toString().replaceAll("amp;", "");
-        else
-          newPost.subIcon = tmp.data!["banner_background_image"].toString().replaceAll("amp;", "");
+        newPost.subIcon = tmp.iconImage.toString().replaceAll("amp;", "");
       }
       posts.add(newPost);
     }
@@ -219,10 +216,7 @@ class ApiLauncher {
       fetchedForIcon = await redditApi.redditApi.subreddits.searchByName(newPost.subReddit, exact: true);
       if (fetchedForIcon.length > 0) {
         tmp = (await fetchedForIcon[0].populate());
-        if (tmp.data!["mobile_banner_image"].toString() == "")
-          newPost.subIcon = tmp.data!["mobile_banner_image"].toString().replaceAll("amp;", "");
-        else
-          newPost.subIcon = tmp.data!["banner_background_image"].toString().replaceAll("amp;", "");
+        newPost.subIcon = tmp.iconImage.toString().replaceAll("amp;", "");
       }
       posts.add(newPost);
     }
