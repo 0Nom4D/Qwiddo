@@ -27,9 +27,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: wearerequired/git-mirror-action@v1.0.1
-        if: github.repository == '0Nom4D/B-DEV-501-NAN-5-1-redditech-arthur.adam-'
+        if: github.repository == '0Nom4D/Qwiddo'
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
         with:
-          source-repo: git@github.com:0Nom4D/B-DEV-501-NAN-5-1-redditech-arthur.adam-.git
+          source-repo: git@github.com:0Nom4D/Qwiddo.git
           destination-repo: git@github.com:EpitechPromo2024/B-DEV-501-NAN-5-1-redditech-arthur.adam.git
