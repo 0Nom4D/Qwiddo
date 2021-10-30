@@ -14,7 +14,7 @@ jobs:
       - name: Flutter action
         uses: subosito/flutter-action@v1.5.3
         with:
-          flutter-version: 'stable'
+          channel: 'stable'
       - run: flutter clean
       - run: flutter pub get
       - run: flutter build apk lib/src/main.dart
