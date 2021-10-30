@@ -51,42 +51,6 @@ class PostDataModel extends ChangeNotifier {
     notifyListeners();
   }
 
- // upVoteItem(Post postToUpVote) {
- //   for (Post tmp in postTilesList) {
- //     if (postToUpVote.itemId == tmp.itemId) {
- //       if (tmp.myUpVotes == 1) {
- //         tmp.myUpVotes = 0;
- //         ApiLauncher.cancelVote(tmp.rawData!);
- //       } else {
- //         if (tmp.myDownVotes == 1) {
- //           tmp.myDownVotes = 0;
- //           ApiLauncher.cancelVote(tmp.rawData!);
- //         }
- //         tmp.myUpVotes++;
- //         ApiLauncher.upvotePost(tmp.rawData!);
- //       }
- //     }
- //   }
- // }
- //
- // downVoteItem(Post postToDownVote) {
- //   for (Post tmp in postTilesList) {
- //     if (postToDownVote.itemId == tmp.itemId) {
- //       if (tmp.myDownVotes == 1) {
- //         tmp.myDownVotes = 0;
- //         ApiLauncher.cancelVote(tmp.rawData!);
- //       } else {
- //         if (tmp.myUpVotes == 1) {
- //           tmp.myUpVotes = 0;
- //           ApiLauncher.cancelVote(tmp.rawData!);
- //         }
- //         tmp.myDownVotes++;
- //         ApiLauncher.downvotePost(tmp.rawData!);
- //       }
- //     }
- //   }
- // }
-
   /// Get the last [Post] itemId object
   getLastFetchedItem() {
     if (postTilesList.isEmpty)

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:f_redditech/providers/subreddit_post_datas.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:f_redditech/providers/post_datas.dart';
@@ -5,6 +7,7 @@ import 'package:f_redditech/providers/user_datas.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:f_redditech/models/post.dart';
 import 'package:f_redditech/models/user.dart';
+import 'package:http/http.dart' as http;
 import 'package:draw/draw.dart';
 
 /// Api Service Singleton Class
@@ -237,6 +240,28 @@ class ApiLauncher {
     await targetedSub.unsubscribe();
   }
 
+  static Future<Map<String, dynamic>> getPrefs() async {
+    ApiLauncher redditApi = ApiLauncher();
+    Map<String, dynamic> settingsMap = {};
+
+    settingsMap = await redditApi.redditApi.get(
+        "/api/v1/me/prefs",
+        objectify: false
+    );
+    return (settingsMap);
+  }
+
+  static savePrefs(Map<String, dynamic> settingsMap) async {
+    ApiLauncher redditApi = ApiLauncher();
+    await http.patch(Uri.https("oauth.reddit.com", "api/v1/me/prefs"),
+        headers: {
+          "Authorization": "Bearer ${redditApi.redditApi.auth.credentials.accessToken}",
+          "Content-Type": "application/json"
+        },
+        body: json.encode(settingsMap)
+    );
+  }
+
   /// Static Method Upvoting a Submission Post
   static upvotePost(Submission upvotedPost) async {
     return (await upvotedPost.upvote());
@@ -252,8 +277,6 @@ class ApiLauncher {
     return (await post.clearVote());
   }
 
-  /// Method
-  ///
   /// Returning a boolean defining the state of the Reddit flow
   /// True if the user is connected and the flowInstance is created
   /// False either
