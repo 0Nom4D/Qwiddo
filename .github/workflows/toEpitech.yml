@@ -19,7 +19,7 @@ jobs:
       - run: flutter pub get
       - run: flutter build apk lib/src/main.dart
       - name: Change build apk name
-        run: mv build/app/outputs/flutter-apk/app-release.apk qwiddo.apk
+        run: mv ./build/app/outputs/flutter-apk/app-release.apk qwiddo.apk
       - name: Upload APK
         uses: actions/upload-artifact@v2.2.4
         with:
