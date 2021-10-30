@@ -15,14 +15,19 @@ jobs:
         uses: subosito/flutter-action@v1.5.3
         with:
           channel: 'stable'
-      - run: flutter clean
-      - run: flutter pub get
-      - run: flutter build apk lib/src/main.dart
+      - name: Install Fluter Packages
+        run: |
+          flutter pub get
+          flutter clean
+      - name: Build Apk
+        run: flutter build apk lib/src/main.dart
+      - name: Set build name
+        run: mv build/app/outputs/flutter-apk/app-release.apk qwiddo.apk
       - name: Upload APK
         uses: actions/upload-artifact@v2.2.4
         with:
           name: build
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: qwiddo.apk
 
   pushOnEpitech:
     runs-on: ubuntu-latest
@@ -34,3 +39,16 @@ jobs:
         with:
           source-repo: git@github.com:0Nom4D/Qwiddo.git
           destination-repo: git@github.com:EpitechPromo2024/B-DEV-501-NAN-5-1-redditech-arthur.adam.git
+
+  releaseApp:
+    if: github.ref == 'refs/heads/master'
+    needs: [testLaunchRedditech]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: qwiddo.apk
