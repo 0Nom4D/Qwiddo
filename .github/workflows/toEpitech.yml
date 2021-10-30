@@ -17,7 +17,7 @@ jobs:
           flutter-version: 2.2.1
       - run: flutter clean
       - run: flutter pub get
-      - run: flutter build apk
+      - run: flutter build apk lib/src/main.dart
       - name: Upload APK
         uses: actions/upload-artifact@v2.2.4
         with:

@@ -2,6 +2,8 @@
 
 Redditech is an EPITECH AppDev project. Redditech is an application connected to the Reddit API.
 
+[![Documentation](https://img.shields.io/badge/Documentation-dartdoc-blue?style=flat-square)](https://0nom4d.github.io/Qwiddo/)
+
 ## Before continuing...
 
 This project is an EPITECH Project. If you are an EPITECH student, move out the way! Nothing to see here...
