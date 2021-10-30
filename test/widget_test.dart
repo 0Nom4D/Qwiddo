@@ -1,9 +1,9 @@
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:f_redditech/widgets/home_page.dart';
-import 'package:f_redditech/widgets/base_page.dart';
-import 'package:f_redditech/widgets/loading_page.dart';
+import 'package:f_redditech/src/widgets/home_page.dart';
+import 'package:f_redditech/src/widgets/base_page.dart';
+import 'package:f_redditech/src/widgets/loading_page.dart';
 
 void main() {
   final homeApp = MediaQuery(
