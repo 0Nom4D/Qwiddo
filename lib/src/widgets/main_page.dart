@@ -165,21 +165,18 @@ class PostCard extends StatelessWidget {
 
   /// Method computing time between two [DateTime] objects
   String timeBetween(DateTime from, DateTime to) {
-    final nbSecondsFrom = from.second;
-    final nbSecondsTo = to.second;
-    int diffSeconds = nbSecondsTo - nbSecondsFrom;
+    Duration differenceBetween = to.difference(from);
+    int diffSeconds = differenceBetween.inSeconds.round();
 
     if (diffSeconds < 60)
       return ("Now");
     else if (diffSeconds >= 60 && diffSeconds < 3600)
-      return ((diffSeconds / 60).toString() + " min");
+      return ((diffSeconds / 60).round().toString() + " min");
     else if (diffSeconds >= 3600 && diffSeconds < 86400)
-      return ((diffSeconds / 3600).toString() + " h");
-    else if (diffSeconds >= 86400 && diffSeconds < 604800)
-      return ((diffSeconds / 86400).toString() + " d");
-    else if (diffSeconds >= 604800 && diffSeconds < 7257600)
-      return ((diffSeconds / 604800).toString() + " mois");
-    return ((diffSeconds / 7257600).toString() + " ans");
+      return ((diffSeconds / 3600).round().toString() + " h");
+    else if (diffSeconds >= 86400 && diffSeconds < 31536000)
+      return ((diffSeconds / 86400).round().toString() + " j");
+    return ((diffSeconds / 31536000).round().toString() + " an(s)");
   }
 
   @override
