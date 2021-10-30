@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Redditech',
+      title: 'Qwiddo',
       theme: ThemeData(
         primaryColor: Colors.deepOrange
       ),

@@ -27,65 +27,70 @@ class _MyHomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(
-          alignment: Alignment.center,
-          child: CachedNetworkImage(
-            imageUrl: "https://cdn.dribbble.com/users/244018/screenshots/1506924/media/b0f10339a5471a0733561a83636babf8.gif",
-            imageBuilder: (context, imageProvider) => Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: imageProvider,
-                  fit: BoxFit.cover,
-                  colorFilter: new ColorFilter.mode(Colors.blue.withOpacity(0.8), BlendMode.dstATop),
-                  )
-                ),
-              ),
-            ),
-          ),
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
           Container(
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  textStyle: const TextStyle(
-                      fontSize: 20
+            alignment: Alignment.center,
+            child: CachedNetworkImage(
+              imageUrl: "https://cdn.dribbble.com/users/244018/screenshots/1506924/media/b0f10339a5471a0733561a83636babf8.gif",
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                    colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.9), BlendMode.dstATop),
+                    )
                   ),
-                  primary: Colors.deepOrange,
                 ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/home');
-                },
-                child: new Tooltip(message: 'Connexion', child: new Text("Se connecter")),
               ),
             ),
-          ),
-        Container(
-          alignment: Alignment.center,
-          child: Stack(
-            children: <Widget>[
-              Text("Redditech\nRedditech est une application que vous pouvez utiliser de la même façon que le client reddit avec des fonctionalités limitées.",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20,
-                foreground: Paint()
-                  ..style = PaintingStyle.stroke
-                  ..strokeWidth = 4.0
-                  ..color = Colors.white,
+            Container(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    textStyle: const TextStyle(
+                        fontSize: 20
+                    ),
+                    primary: Colors.deepOrange,
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/home');
+                  },
+                  child: new Tooltip(
+                    message: 'Connexion',
+                    child: new Text("Se connecter")
+                  ),
                 ),
               ),
-              Text("Redditech\nRedditech est une application que vous pouvez utiliser de la même façon que le client reddit avec des fonctionalités limitées.",
+            ),
+          Container(
+            alignment: Alignment.center,
+            child: Stack(
+              children: <Widget>[
+                Text("Qwiddo\nQwiddo est une application que vous pouvez utiliser de la même façon que le client reddit avec des fonctionalités limitées.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 20,
-                  color: Colors.deepOrange
+                  foreground: Paint()
+                    ..style = PaintingStyle.stroke
+                    ..strokeWidth = 3.0
+                    ..color = Colors.white,
+                  ),
                 ),
-              )
-            ]
+                Text("Qwiddo\nQwiddo est une application que vous pouvez utiliser de la même façon que le client reddit avec des fonctionalités limitées.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.deepOrange
+                  ),
+                )
+              ]
+            )
           )
-        )
-      ],
+        ],
+      )
     );
   }
 }

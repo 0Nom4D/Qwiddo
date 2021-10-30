@@ -44,7 +44,7 @@ class _BasePageState extends State<BasePage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Container(
-          child: Text("Redditech",
+          child: Text("Qwiddo",
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
