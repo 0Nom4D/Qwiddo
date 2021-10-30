@@ -21,13 +21,10 @@ jobs:
           flutter clean
       - name: Build Apk
         run: flutter build apk lib/src/main.dart
-      - name: Set build name
-        run: mv build/app/outputs/flutter-apk/app-release.apk qwiddo.apk
       - name: Upload APK
         uses: actions/upload-artifact@v2.2.4
         with:
-          name: build
-          path: qwiddo.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
 
   pushOnEpitech:
     runs-on: ubuntu-latest
@@ -51,4 +48,4 @@ jobs:
           automatic_release_tag: "latest"
           prerelease: true
           title: "Development Build"
-          files: qwiddo.apk
+          files: build/app/outputs/flutter-apk/app-release.apk
