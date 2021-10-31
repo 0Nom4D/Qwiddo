@@ -129,6 +129,7 @@ class _SettingSwitch extends State<SettingSwitch> {
       child: Switch(
         onChanged: (value) {
           setState(() {
+            widget.settings[widget.index] = value;
             widget.wholeSettings[widget.index] = value;
             ApiLauncher.savePrefs(widget.wholeSettings);
           });
