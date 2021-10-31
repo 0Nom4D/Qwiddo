@@ -15,14 +15,25 @@ jobs:
         uses: subosito/flutter-action@v1.5.3
         with:
           channel: 'stable'
-      - run: flutter clean
-      - run: flutter pub get
-      - run: flutter build apk lib/src/main.dart
+      - name: Install Fluter Packages
+        run: |
+          flutter pub get
+          flutter clean
+      - name: Build Apk
+        run: flutter build apk lib/src/main.dart
       - name: Upload APK
         uses: actions/upload-artifact@v2.2.4
         with:
-          name: build
           path: build/app/outputs/flutter-apk/app-release.apk
+      - name: Automatic Release Apk File
+        uses: marvinpinto/action-automatic-releases@latest
+        if: github.ref == 'refs/heads/master'
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: build/app/outputs/flutter-apk/app-release.apk
 
   pushOnEpitech:
     runs-on: ubuntu-latest
