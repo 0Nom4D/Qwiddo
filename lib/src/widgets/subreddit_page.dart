@@ -96,32 +96,32 @@ class _SubredditPageState extends State<SubredditPage> {
                         child: Wrap(
                           children: [
                             ListTile(
-                                title: Text("Nouveautés"),
-                                onTap: () {
-                                  subredditData.changeCategory("new", "Nouveautés");
-                                  Navigator.pop(context);
-                                }
+                              title: Text("Nouveautés"),
+                              onTap: () {
+                                subredditData.changeCategory("new", "Nouveautés");
+                                Navigator.pop(context);
+                              }
                             ),
                             ListTile(
-                                title: Text("Au top"),
-                                onTap: () {
-                                  subredditData.changeCategory("top", "Au top");
-                                  Navigator.pop(context);
-                                }
+                              title: Text("Au top"),
+                              onTap: () {
+                                subredditData.changeCategory("top", "Au top");
+                                Navigator.pop(context);
+                              }
                             ),
                             ListTile(
-                                title: Text("Populaires"),
-                                onTap: () {
-                                  subredditData.changeCategory("hot", "Populaires");
-                                  Navigator.pop(context);
-                                }
+                              title: Text("Populaires"),
+                              onTap: () {
+                                subredditData.changeCategory("hot", "Populaires");
+                                Navigator.pop(context);
+                              }
                             ),
                             ListTile(
-                                title: Text("En hausse"),
-                                onTap: () {
-                                  subredditData.changeCategory("rising", "En hausse");
-                                  Navigator.pop(context);
-                                }
+                              title: Text("En hausse"),
+                              onTap: () {
+                                subredditData.changeCategory("rising", "En hausse");
+                                Navigator.pop(context);
+                              }
                             )
                           ],
                         )
